@@ -1,0 +1,70 @@
+plank:
+  pod_pending_timeout: 60m
+  default_decoration_config:
+    timeout: 7200000000000 # 2h
+    grace_period: 15000000000 # 15s
+    utility_images:
+      clonerefs: "gcr.io/k8s-prow/clonerefs:v20190311-a967141"
+      initupload: "gcr.io/k8s-prow/initupload:v20190311-a967141"
+      entrypoint: "gcr.io/k8s-prow/entrypoint:v20190311-a967141"
+      sidecar: "gcr.io/k8s-prow/sidecar:v20190311-a967141"
+    gcs_configuration:
+      bucket: "prow-test-cxing-gke-dev"
+      path_strategy: "legacy"
+      default_org: "verult-prowbot"
+      default_repo: "Cirq"
+    gcs_credentials_secret: "service-account"
+
+    
+sinker:
+  resync_period: 1m
+  max_prowjob_age: 48h
+  max_pod_age: 5m
+
+
+presubmits:
+  verult-prowbot/Cirq:
+  - name: mypy
+    decorate: true
+    always_run: true
+    skip_report: false
+    spec:
+      containers:
+      - image: gcr.io/cxing-gke-dev/cirq-test:latest
+        command: ["check/mypy"]
+
+
+branch-protection:
+  orgs:
+    verult-prowbot:
+      repos:
+        Cirq:
+          branches:
+            master:
+              protect: true
+          # required_status_checks:
+          #   contexts:
+          #   # TODO update with status checks in quantumlib/Cirq
+          #   - continuous-integration/travis-ci/pr
+
+            
+tide:
+  merge_method:
+    verult-prowbot/Cirq: squash
+
+  target_url: http://35.244.234.234/tide #TODO https, domain name
+
+  queries:
+  - repos:
+    - verult-prowbot/Cirq
+    labels:
+    - automerge
+    reviewApprovedRequired: true
+
+  context_options:
+    # Use branch protection options to define required and optional contexts
+    from-branch-protection: true
+    # Treat unknown contexts as optional
+    skip-unknown-contexts: true
+
+    # Presubmits are automatically recognized by tide as prereqs for merging.

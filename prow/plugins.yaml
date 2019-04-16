@@ -1,0 +1,11 @@
+plugins:
+  verult-prowbot/Cirq:
+  - trigger
+  - config-updater
+
+config_updater:
+  maps:
+    prow/config.yaml:
+      name: config
+    prow/plugins.yaml:
+      name: plugins
