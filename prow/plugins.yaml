@@ -2,7 +2,6 @@ plugins:
   verult-prowbot/Cirq:
   - trigger
   - config-updater
-  - lgtm
 
 config_updater:
   maps:
