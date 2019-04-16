@@ -1,4 +1,6 @@
 plank:
+  job_url_prefix_config:
+    "*": https://prow.k8s.io/view/gcs/
   pod_pending_timeout: 60m
   default_decoration_config:
     timeout: 7200000000000 # 2h
