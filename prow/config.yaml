@@ -22,6 +22,22 @@ sinker:
   max_pod_age: 5m
 
 
+deck:
+  spyglass:
+    size_limit: 500000000 # 500MB
+    #gcs_browser_prefix: https://gcsweb.k8s.io/gcs/
+    #testgrid_config: gs://k8s-testgrid/config
+    #testgrid_root: https://testgrid.k8s.io/
+    viewers:
+      "started.json|finished.json":
+      - "metadata"
+      "build-log.txt":
+      - "buildlog"
+      #"artifacts/junit.*\\.xml":
+      #- "junit"
+  tide_update_period: 1s
+
+
 presubmits:
   verult-prowbot/Cirq:
   - name: mypy
