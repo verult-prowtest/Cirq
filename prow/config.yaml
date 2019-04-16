@@ -1,6 +1,6 @@
 plank:
   job_url_prefix_config:
-    "*": https://prow.k8s.io/view/gcs/
+    "*": https://35.244.234.234/view/gcs/ # TODO update domain name
   pod_pending_timeout: 60m
   default_decoration_config:
     timeout: 7200000000000 # 2h
