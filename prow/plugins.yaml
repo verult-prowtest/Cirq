@@ -1,7 +1,6 @@
 plugins:
   verult-prowbot/Cirq:
   - trigger
-  - lgtm
   - config-updater
 
 config_updater:

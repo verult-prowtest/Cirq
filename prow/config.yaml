@@ -74,7 +74,7 @@ presubmits:
       containers:
       - image: gcr.io/cxing-gke-dev/cirq-test:latest
         command: ["check/pytest-and-incremental-coverage", "master"]
-  - name: pytest (without contrib)
+  - name: pytest-without-contrib
     decorate: true
     always_run: true
     skip_report: false
