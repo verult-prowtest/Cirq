@@ -1,6 +1,6 @@
 plank:
   job_url_prefix_config:
-    "*": https://35.244.234.234/view/gcs/ # TODO update domain name
+    "*": http://35.244.234.234/view/gcs/ # TODO update domain name; change to HTTPS
   pod_pending_timeout: 60m
   default_decoration_config:
     timeout: 7200000000000 # 2h
@@ -50,6 +50,38 @@ presubmits:
       containers:
       - image: gcr.io/cxing-gke-dev/cirq-test:latest
         command: ["check/mypy"]
+  - name: pylint
+    decorate: true
+    always_run: true
+    skip_report: false
+    spec:
+      containers:
+      - image: gcr.io/cxing-gke-dev/cirq-test:latest
+        command: ["check/pylint"]
+  - name: format
+    decorate: true
+    always_run: true
+    skip_report: false
+    spec:
+      containers:
+      - image: gcr.io/cxing-gke-dev/cirq-test:latest
+        command: ["check/format-incremental"]
+  - name: pytest-and-incremental-coverage
+    decorate: true
+    always_run: true
+    skip_report: false
+    spec:
+      containers:
+      - image: gcr.io/cxing-gke-dev/cirq-test:latest
+        command: ["check/pytest-and-incremental-coverage", "master"]
+  - name: pytest (without contrib)
+    decorate: true
+    always_run: true
+    skip_report: false
+    spec:
+      containers:
+      - image: gcr.io/cxing-gke-dev/cirq-test:latest
+        command: ["check/pytest", "--ignore=cirq/contrib"]
 
 
 branch-protection:
@@ -62,8 +94,8 @@ branch-protection:
               protect: true
           # required_status_checks:
           #   contexts:
-          #   # TODO update with status checks in quantumlib/Cirq
-          #   - continuous-integration/travis-ci/pr
+          #   # TODO uncomment
+          #   - cla/google
 
             
 tide:
@@ -77,6 +109,10 @@ tide:
     - verult-prowbot/Cirq
     labels:
     - automerge
+    # TODO uncomment CLA stuff
+    #- "cla: yes" 
+    #missingLabels:
+    #- "cla: no"
     reviewApprovedRequired: true
 
   context_options:
